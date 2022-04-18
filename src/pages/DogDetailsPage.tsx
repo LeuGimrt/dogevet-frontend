@@ -93,15 +93,7 @@ const DogDetailsPage = () => {
                 <p>{String(consultation.registered_at).slice(0, 10)}</p> <br />
                 <strong>Examen de sangre: </strong>
                 <br />
-                <p>
-                  <ExternalLinkButton
-                    href={consultation.blood_test}
-                    target='_blank'
-                  >
-                    Descargar resultados
-                  </ExternalLinkButton>
-                </p>{" "}
-                <br />
+                <p>{consultation.blood_test}</p> <br />
                 <strong>Rayos X</strong> <br /> <br />
                 <div>
                   <img
