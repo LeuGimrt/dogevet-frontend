@@ -2,7 +2,7 @@ import { useState } from "react";
 import { SectionContainer } from "../containers/SectionContainer";
 import { Button } from "../elements/Button";
 import useForm from "../hooks/useForm";
-import { Dog } from "../types/appTypes";
+import { AxiosErrorResponse, Dog } from "../types/appTypes";
 import { H1 } from "../elements/Heading";
 import Card from "../components/Card";
 import TextField from "../components/TextField";
@@ -10,7 +10,6 @@ import Select from "../components/Select";
 import dogsApi from "../config/axios";
 import toast from "react-hot-toast";
 import useStorage from "../hooks/useStorage";
-import Loading from "../components/Loading";
 import { Spinner } from "../elements/Spinner";
 
 const breedOptions = [
@@ -27,19 +26,20 @@ const genderOptions = [
   { label: "Hembra", value: "0" },
 ];
 
+const initialValues = {
+  name: "",
+  breed: "pitbull",
+  gender: "1",
+  b_date: "",
+};
+
 const RegisterDogPage = () => {
   const [img, setImg] = useState<File>();
   const [isSending, setIsSending] = useState(false);
   const { uploadFile } = useStorage("pets");
 
-  const { name, breed, gender, b_date, onChange, form, setFormValue } = useForm(
-    {
-      name: "",
-      breed: "pitbull",
-      gender: "1",
-      b_date: "",
-    }
-  );
+  const { name, breed, gender, b_date, onChange, form, setFormValue } =
+    useForm(initialValues);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -68,10 +68,7 @@ const RegisterDogPage = () => {
   const registerDog = (url: string) => {
     dogsApi
       .post<Dog>("/dogs/new", {
-        name,
-        b_date,
-        breed,
-        gender,
+        ...form,
         img: url,
       })
       .then((res) => {
@@ -82,16 +79,14 @@ const RegisterDogPage = () => {
             color: "white",
           },
         });
-        setFormValue({
-          b_date: "",
-          breed: "pitbull",
-          gender: "1",
-          name: "",
-        });
+        setFormValue(initialValues);
         setImg(undefined);
         console.log(res);
       })
-      .catch((err) => toast.error("Ocurrió un error 😯"));
+      .catch((error) => {
+        const err = error as AxiosErrorResponse;
+        toast.error(err.response.data.error.message);
+      });
   };
 
   return (
@@ -169,11 +164,8 @@ const RegisterDogPage = () => {
           >
             {isSending ? (
               <>
-                <Spinner
-                  color='primary'
-                  style={{ height: "100%", display: "inline-block" }}
-                />{" "}
-                Enviando...
+                <Spinner color='primary' size='xs' style={{ marginRight: 6 }} />{" "}
+                Registrando...
               </>
             ) : (
               "Registrar"

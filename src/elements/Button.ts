@@ -23,7 +23,7 @@ const buttonStyle = css<ButtonProps>`
     outline-color: black;
   }
 
-  :active {
+  :active:not(:disabled) {
     opacity: 0.5;
   }
 
@@ -72,7 +72,8 @@ const buttonStyle = css<ButtonProps>`
     `}
 
   :disabled {
-    background-color: #999;
+    background-color: #888;
+    cursor: auto;
   }
 `;
 

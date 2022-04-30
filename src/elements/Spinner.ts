@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import theme from "../styles/theme";
 
 type Props = {
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   color?: "primary" | "secondary" | "dark";
 };
 
@@ -29,6 +29,15 @@ export const Spinner = styled.div<Props>`
 
   ${({ size = "md" }) => {
     switch (size) {
+      case "xs":
+        return css`
+          ::after {
+            width: 8px;
+            height: 8px;
+            border-width: 2px;
+            margin: 0;
+          }
+        `;
       case "sm":
         return css`
           ::after {
