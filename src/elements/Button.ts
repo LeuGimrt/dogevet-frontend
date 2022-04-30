@@ -18,10 +18,11 @@ const buttonStyle = css<ButtonProps>`
   transition: outline-color 200ms ease-in-out;
   outline: 2px dotted transparent;
   outline-offset: -2px;
-  :hover {
+  :hover:not(:disabled) {
     opacity: 0.9;
     outline-color: black;
   }
+
   :active {
     opacity: 0.5;
   }
@@ -69,6 +70,10 @@ const buttonStyle = css<ButtonProps>`
     css`
       width: 100%;
     `}
+
+  :disabled {
+    background-color: #999;
+  }
 `;
 
 export const Button = styled.button<ButtonProps>`

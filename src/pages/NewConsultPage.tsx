@@ -12,12 +12,11 @@ import dogsApi from "../config/axios";
 import Select from "../components/Select/index";
 import { Button } from "../elements/Button";
 import toast from "react-hot-toast";
-import useUploadFile from "../hooks/useUploadFile";
-import Loading from "../components/Loading";
+import useUploadFile from "../hooks/useStorage";
 
 const NewConsultPage = () => {
   const [img, setImg] = useState<File>();
-  const { uploadFile, status } = useUploadFile();
+  const { uploadFile } = useUploadFile("consults");
 
   const [dogsOptions, setDogsOptions] = useState<
     { label: string; value: string }[]
@@ -72,11 +71,18 @@ const NewConsultPage = () => {
     setImg(files[0]);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     console.log(form);
+    if (!img) return;
+    try {
+      const url = await uploadFile(img);
+      console.log("Registrando");
 
-    uploadFile(img, registerConsult);
+      registerConsult(url);
+    } catch (error: any) {
+      toast.error("Ocurrió un error: ", error);
+    }
   };
 
   const registerConsult = (url: string) => {
@@ -207,9 +213,6 @@ const NewConsultPage = () => {
               Generar diagnóstico
             </Button>
           </form>
-          {status === "uploading" && (
-            <Loading fullwidth color='primary' size='sm' />
-          )}
         </Card>
       </StackContainer>
     </SectionContainer>

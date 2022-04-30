@@ -9,8 +9,9 @@ import TextField from "../components/TextField";
 import Select from "../components/Select";
 import dogsApi from "../config/axios";
 import toast from "react-hot-toast";
-import useUploadFile from "../hooks/useUploadFile";
+import useStorage from "../hooks/useStorage";
 import Loading from "../components/Loading";
+import { Spinner } from "../elements/Spinner";
 
 const breedOptions = [
   { label: "Pitbull", value: "pitbull" },
@@ -28,7 +29,8 @@ const genderOptions = [
 
 const RegisterDogPage = () => {
   const [img, setImg] = useState<File>();
-  const { uploadFile, status } = useUploadFile();
+  const [isSending, setIsSending] = useState(false);
+  const { uploadFile } = useStorage("pets");
 
   const { name, breed, gender, b_date, onChange, form, setFormValue } = useForm(
     {
@@ -45,10 +47,22 @@ const RegisterDogPage = () => {
     setImg(files[0]);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     console.log(form);
-    uploadFile(img, registerDog);
+
+    if (!img) return;
+
+    setIsSending(true);
+
+    try {
+      const url = await uploadFile(img);
+      registerDog(url);
+    } catch (error: any) {
+      toast.error("Ocurrió un error: ", error);
+    }
+    setIsSending(false);
   };
 
   const registerDog = (url: string) => {
@@ -151,13 +165,21 @@ const RegisterDogPage = () => {
             type='submit'
             fullWidth
             style={{ margin: "20px 0" }}
+            disabled={isSending}
           >
-            Registrar
+            {isSending ? (
+              <>
+                <Spinner
+                  color='primary'
+                  style={{ height: "100%", display: "inline-block" }}
+                />{" "}
+                Enviando...
+              </>
+            ) : (
+              "Registrar"
+            )}
           </Button>
         </form>
-        {status === "uploading" && (
-          <Loading fullwidth color='primary' size='sm' />
-        )}
       </Card>
     </SectionContainer>
   );
