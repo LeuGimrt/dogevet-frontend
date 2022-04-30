@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 import { SectionContainer } from "../containers/SectionContainer";
-import { Dog } from "../types/appTypes";
+import { Dog } from "../types/dataTypes";
 import dogsApi from "../config/axios";
 import Card from "../components/Card";
 import { StackContainer } from "../containers/StackContainer";

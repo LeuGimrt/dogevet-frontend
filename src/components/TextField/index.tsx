@@ -1,4 +1,5 @@
-import { Input, TextFieldContainer, ValidationsText } from "./styles";
+import { ValidationsText } from "../../elements/ValidationsText";
+import { Input, TextFieldContainer } from "./styles";
 
 type Props = {
   label: string;

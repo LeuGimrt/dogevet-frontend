@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 import dogsApi from "../config/axios";
-import { User, LoginData, LoginResponse } from "../types/appTypes";
+import { User, LoginData, LoginResponse } from "../types/dataTypes";
 import { authReducer, AuthState } from "./authReducer";
 
 type AuthContextProps = {

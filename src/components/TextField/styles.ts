@@ -14,27 +14,21 @@ export const Input = styled.input`
   outline: none;
   border: 1px solid #ffcf70;
   background-color: #ffffff;
-  &:focus {
+  :focus {
     outline: 2px solid #ffcf70;
   }
-  &:disabled {
+  :disabled {
     background-color: #f7f7f7;
   }
-`;
-
-export const ValidationsText = styled.small`
-  font-size: 0.8rem;
-  color: #eb4034;
-  font-weight: 500;
-  padding-left: 0.2em;
-  animation: fadein 0.3s linear;
-
-  @keyframes fadein {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
+  ::-webkit-file-upload-button {
+    background-color: #555;
+    border-radius: 4px;
+    padding: 0.6em 2em;
+    margin-right: 1em;
+    border: none;
+    color: white;
+    :hover {
+      background-color: #333;
     }
   }
 `;

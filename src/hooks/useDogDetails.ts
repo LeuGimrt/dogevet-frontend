@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import dogsApi from "../config/axios";
-import { DogDetails } from "../types/appTypes";
+import { DogDetails } from "../types/dataTypes";
 import toast from "react-hot-toast";
 
 const useDogDetails = (dogId: string) => {

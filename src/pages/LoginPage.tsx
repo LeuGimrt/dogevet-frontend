@@ -13,7 +13,7 @@ import Card from "../components/Card";
 import { H1 } from "../elements/Heading";
 import TextField from "../components/TextField";
 import { Button } from "../elements/Button";
-import { AxiosErrorResponse } from "../types/appTypes";
+import { AxiosErrorResponse } from "../types/dataTypes";
 import { loginValidations } from "../utils/validations";
 
 const LoginPage = () => {

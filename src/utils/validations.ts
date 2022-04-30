@@ -2,13 +2,13 @@ import * as Yup from "yup";
 
 // Login validations
 
-export const emailValidation = Yup.string()
+const emailValidation = Yup.string()
   .trim()
   .max(100, "El máximo de caracteres es de 100")
   .email("Debe tener un formato adecuado")
   .required("Requerido");
 
-export const passwordValidation = Yup.string()
+const passwordValidation = Yup.string()
   .trim()
   .min(8, "La contraseña debe tener un mínimo de 8 caracteres")
   .max(20, "El máximo de caracteres es de 20")
@@ -16,18 +16,18 @@ export const passwordValidation = Yup.string()
 
 // Register validations
 
-export const nameValidation = Yup.string()
+const nameValidation = Yup.string()
   .trim()
   .max(50, "El máximo de caracteres es de 50")
   .required("Requerido");
 
-export const phoneValidation = Yup.string()
+const phoneValidation = Yup.string()
   .trim()
   .length(9, "Debe tener 9 dígitos")
   .matches(/^[0-9]+$/, "Debe tener 9 dígitos")
   .required("Requerido");
 
-export const passwordRegexValidation = Yup.string()
+const passwordRegexValidation = Yup.string()
   .trim()
   .min(8, "La contraseña debe tener un mínimo de 8 caracteres")
   .matches(
@@ -36,6 +36,15 @@ export const passwordRegexValidation = Yup.string()
   )
   .max(20, "El máximo de caracteres es de 20")
   .required("Requerido");
+
+// New dog validations
+
+const genderValidation = Yup.string()
+  .trim()
+  .oneOf(["0", "1"], "Debe ser masculino o femenino")
+  .required("Requerido");
+
+const bDateValidation = Yup.date().required("Requerido");
 
 // Validation objects
 
@@ -50,4 +59,11 @@ export const registerValidations = Yup.object({
   phone: phoneValidation,
   email: emailValidation,
   password: passwordRegexValidation,
+});
+
+export const newDogValidations = Yup.object({
+  name: nameValidation,
+  breed: nameValidation,
+  gender: genderValidation,
+  b_date: bDateValidation,
 });

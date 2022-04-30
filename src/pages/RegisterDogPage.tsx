@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { SectionContainer } from "../containers/SectionContainer";
 import { Button } from "../elements/Button";
-import useForm from "../hooks/useForm";
-import { AxiosErrorResponse, Dog } from "../types/appTypes";
+import { AxiosErrorResponse, Dog, NewDogData } from "../types/dataTypes";
 import { H1 } from "../elements/Heading";
 import Card from "../components/Card";
 import TextField from "../components/TextField";
@@ -11,6 +10,8 @@ import dogsApi from "../config/axios";
 import toast from "react-hot-toast";
 import useStorage from "../hooks/useStorage";
 import { Spinner } from "../elements/Spinner";
+import { useFormik } from "formik";
+import { newDogValidations } from "../utils/validations";
 
 const breedOptions = [
   { label: "Pitbull", value: "pitbull" },
@@ -26,7 +27,7 @@ const genderOptions = [
   { label: "Hembra", value: "0" },
 ];
 
-const initialValues = {
+const initialValues: NewDogData = {
   name: "",
   breed: "pitbull",
   gender: "1",
@@ -38,8 +39,19 @@ const RegisterDogPage = () => {
   const [isSending, setIsSending] = useState(false);
   const { uploadFile } = useStorage("pets");
 
-  const { name, breed, gender, b_date, onChange, form, setFormValue } =
-    useForm(initialValues);
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    handleBlur,
+    setValues,
+  } = useFormik({
+    initialValues,
+    validationSchema: newDogValidations,
+    onSubmit: () => registerDog(),
+  });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -47,31 +59,32 @@ const RegisterDogPage = () => {
     setImg(files[0]);
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const registerDog = async () => {
+    console.log(values);
 
-    console.log(form);
-
-    if (!img) return;
+    if (!img) {
+      toast.error("Se debe adjuntar una imagen");
+      return;
+    }
 
     setIsSending(true);
 
     try {
       const url = await uploadFile(img);
-      registerDog(url);
+      sendData(url);
     } catch (error: any) {
       toast.error("Ocurrió un error: ", error);
     }
     setIsSending(false);
   };
 
-  const registerDog = (url: string) => {
+  const sendData = (url: string) => {
     dogsApi
       .post<Dog>("/dogs/new", {
-        ...form,
+        ...values,
         img: url,
       })
-      .then((res) => {
+      .then(() => {
         toast.success("Registro exitoso", {
           position: "bottom-center",
           style: {
@@ -79,9 +92,8 @@ const RegisterDogPage = () => {
             color: "white",
           },
         });
-        setFormValue(initialValues);
+        setValues(initialValues);
         setImg(undefined);
-        console.log(res);
       })
       .catch((error) => {
         const err = error as AxiosErrorResponse;
@@ -103,48 +115,56 @@ const RegisterDogPage = () => {
         <H1 style={{ fontSize: "2.5rem" }} center>
           Registro de mascota 🐶
         </H1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <TextField
-            handleChange={({ currentTarget: { value } }) =>
-              onChange(value, "name")
-            }
+            handleChange={handleChange}
             label='Nombre'
             name='name'
-            value={name}
+            value={values.name}
             type='text'
             placeholder='Ingrese el nombre...'
+            onBlur={handleBlur}
             required
           />
+          <TextField.Validations touched={touched.name} message={errors.name} />
           <Select
             name='breed'
             label='Raza'
-            handleChange={({ currentTarget: { value } }) =>
-              onChange(value, "breed")
-            }
-            value={breed}
+            handleChange={handleChange}
+            value={values.breed}
             options={breedOptions}
+            onBlur={handleBlur}
             required
           />
+          <Select.Validations touched={touched.breed} message={errors.breed} />
           <Select
             name='gender'
             label='Género'
-            handleChange={({ currentTarget: { value } }) =>
-              onChange(value, "gender")
-            }
-            value={gender}
+            handleChange={handleChange}
+            value={values.gender}
             options={genderOptions}
+            onBlur={handleBlur}
             required
           />
+          <Select.Validations
+            touched={touched.gender}
+            message={errors.gender}
+          />
+
           <TextField
-            handleChange={({ currentTarget: { value } }) =>
-              onChange(value, "b_date")
-            }
+            handleChange={handleChange}
             label='Fecha de Nacimiento'
             name='b_date'
-            value={b_date}
+            value={values.b_date}
             type='date'
+            onBlur={handleBlur}
             required
           />
+          <TextField.Validations
+            touched={touched.b_date}
+            message={errors.b_date}
+          />
+
           <TextField
             handleChange={handleImageChange}
             label='Imagen'
@@ -154,9 +174,8 @@ const RegisterDogPage = () => {
             required
           />
           <Button
-            bgcolor='dark'
-            size='sm'
-            className='btn btn-success'
+            bgcolor='primary'
+            size='md'
             type='submit'
             fullWidth
             style={{ margin: "20px 0" }}
@@ -168,7 +187,7 @@ const RegisterDogPage = () => {
                 Registrando...
               </>
             ) : (
-              "Registrar"
+              "REGISTRAR"
             )}
           </Button>
         </form>

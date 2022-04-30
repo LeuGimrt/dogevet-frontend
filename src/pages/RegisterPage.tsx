@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import toast from "react-hot-toast";
 
 import dogsApi from "../config/axios";
-import { User, AxiosErrorResponse } from "../types/appTypes";
+import { User, AxiosErrorResponse } from "../types/dataTypes";
 import ConsultImg from "../assets/consult.jpg";
 import { SectionContainer } from "../containers/SectionContainer";
 import Card from "../components/Card";

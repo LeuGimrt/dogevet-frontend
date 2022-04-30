@@ -38,15 +38,14 @@ export type Dog = {
   registered_by_id: string;
 };
 
-export type DogDetails = {
-  id: string;
+export type NewDogData = {
   name: string;
   breed: string;
-  gender: number;
+  gender: string;
   b_date: string;
-  img: string;
-  registered_at: string;
-  registered_by_id: string;
+};
+
+export type DogDetails = Dog & {
   consultations: Consultation[];
 };
 

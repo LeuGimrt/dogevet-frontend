@@ -7,6 +7,9 @@ import {
 import { useState } from "react";
 import { storage } from "../config/firebase";
 
+/**
+ * @param {string} path Folder path where the uploaded files will be saved
+ */
 const useStorage = (path: string) => {
   const [isUploading, setIsUploading] = useState(false);
 

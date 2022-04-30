@@ -6,7 +6,7 @@ import { SectionContainer } from "../containers/SectionContainer";
 import { StackContainer } from "../containers/StackContainer";
 import { H4 } from "../elements/Heading";
 import { Small } from "../elements/Small";
-import { Dog, SearchState } from "../types/appTypes";
+import { Dog, SearchState } from "../types/dataTypes";
 import TextField from "../components/TextField/index";
 import { Button } from "../elements/Button";
 

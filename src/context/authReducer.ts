@@ -1,4 +1,4 @@
-import { User } from "../types/appTypes";
+import { User } from "../types/dataTypes";
 
 export type AuthState = {
   status: "checking" | "authenticated" | "not-authenticated";

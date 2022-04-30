@@ -10,7 +10,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Button } from "../elements/Button";
 import { H1 } from "../elements/Heading";
 import useForm from "../hooks/useForm";
-import { User } from "../types/appTypes";
+import { User } from "../types/dataTypes";
 
 const ProfilePage = () => {
   const { user, updateUser } = useContext(AuthContext);

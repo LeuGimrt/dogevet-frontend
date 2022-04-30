@@ -7,7 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { AvatarImg } from "../components/Navbar/styles";
 import TextField from "../components/TextField/index";
 import useForm from "../hooks/useForm";
-import { Consultation, Dog } from "../types/appTypes";
+import { Consultation, Dog } from "../types/dataTypes";
 import dogsApi from "../config/axios";
 import Select from "../components/Select/index";
 import { Button } from "../elements/Button";
