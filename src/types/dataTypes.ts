@@ -24,66 +24,34 @@ export type User = {
   password: string;
   role: string;
   registered_at: Date;
-  dogs: Dog[];
+  pets: Pet[];
 };
 
-export type Dog = {
-  id: string;
+export type Pet = {
+  id: number;
   name: string;
-  breed: string;
-  gender: number;
+  type: string;
+  sex: string;
   b_date: string;
   img: string;
-  registered_at: Date;
-  registered_by_id: string;
+  registered_at: string;
+  registered_by_id: number;
 };
 
-export type NewDogData = {
-  name: string;
-  breed: string;
-  gender: string;
-  b_date: string;
-};
-
-export type DogDetails = Dog & {
+export type PetDetails = Pet & {
   consultations: Consultation[];
 };
 
 export type Consultation = {
-  id: string;
+  id: number;
   symptoms: string;
   x_ray_img: string;
   registered_at: string;
-  blood_test: string;
   medicine: string;
   cost: string;
   registered_by: User;
   registered_by_id: string;
-  dog_id: number;
+  pet_id: number;
 };
-
-export type LoginData = {
-  email: string;
-  password: string;
-};
-
-export type RegisterData = {
-  firstname: string;
-  lastname: string;
-  phone: string;
-  email: string;
-  password: string;
-};
-
-// export type RegisteredBy = {
-//   id: number;
-//   firstname: string;
-//   lastname: string;
-//   email: string;
-//   phone: string;
-//   password: string;
-//   role: string;
-//   registered_at: string;
-// };
 
 export type SearchState = "idle" | "searching" | "results-done";

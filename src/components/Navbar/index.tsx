@@ -41,10 +41,10 @@ const Navbar = () => {
                 <NavLink to='/home'>Inicio</NavLink>
               </li>
               <li>
-                <NavLink to='/register-dog'>Registro</NavLink>
+                <NavLink to='/pets/new'>Registro</NavLink>
               </li>
               <li>
-                <NavLink to='/view-dogs'>Consultas</NavLink>
+                <NavLink to='/pets/my-pets'>Consultas</NavLink>
               </li>
             </NavList>
 

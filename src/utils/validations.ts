@@ -39,9 +39,9 @@ const passwordRegexValidation = Yup.string()
 
 // New dog validations
 
-const genderValidation = Yup.string()
+const sexValidation = Yup.string()
   .trim()
-  .oneOf(["0", "1"], "Debe ser masculino o femenino")
+  .oneOf(["M", "F"], "Debe ser masculino o femenino")
   .required("Requerido");
 
 const bDateValidation = Yup.date().required("Requerido");
@@ -63,7 +63,7 @@ export const registerValidations = Yup.object({
 
 export const newDogValidations = Yup.object({
   name: nameValidation,
-  breed: nameValidation,
-  gender: genderValidation,
+  type: nameValidation,
+  sex: sexValidation,
   b_date: bDateValidation,
 });

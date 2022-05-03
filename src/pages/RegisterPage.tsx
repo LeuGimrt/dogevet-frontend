@@ -2,27 +2,24 @@ import { Link } from "react-router-dom";
 
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
+import styled from "styled-components";
 
-import dogsApi from "../config/axios";
-import { User, AxiosErrorResponse } from "../types/dataTypes";
 import ConsultImg from "../assets/consult.jpg";
+
+import petsApi from "../config/axios";
+
+import { User, AxiosErrorResponse } from "../types/dataTypes";
+
 import { SectionContainer } from "../containers/SectionContainer";
 import Card from "../components/Card";
 import { StackContainer } from "../containers/StackContainer";
-import styled from "styled-components";
 import { Button } from "../elements/Button";
 import TextField from "../components/TextField";
 import { H1 } from "../elements/Heading";
 import { Small } from "../elements/Small";
-import { registerValidations } from "../utils/validations";
 
-const initialState = {
-  firstname: "",
-  lastname: "",
-  phone: "",
-  email: "",
-  password: "",
-};
+import { registerValidations } from "../utils/validations";
+import { registerInitialState } from "../utils/constants";
 
 const RegisterPage = () => {
   const {
@@ -34,21 +31,21 @@ const RegisterPage = () => {
     errors,
     touched,
   } = useFormik({
-    initialValues: initialState,
+    initialValues: registerInitialState,
     validationSchema: registerValidations,
     onSubmit: () => registerUser(),
   });
 
   const registerUser = async () => {
     try {
-      const res = await dogsApi.post<User>("/auth/register", values);
+      const res = await petsApi.post<User>("/auth/register", values);
       toast.success("Registro exitoso", {
         style: {
           backgroundColor: "#4BB543",
           color: "white",
         },
       });
-      setValues(initialState);
+      setValues(registerInitialState);
       console.log(res);
     } catch (error: any) {
       const err = error as AxiosErrorResponse;

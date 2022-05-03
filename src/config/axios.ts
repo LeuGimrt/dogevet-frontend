@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const dogsApi = axios.create({
+const petsApi = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000",
 });
 
-dogsApi.interceptors.request.use((config) => {
+petsApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("user-token");
   if (token) {
     config.headers = {
@@ -16,4 +16,4 @@ dogsApi.interceptors.request.use((config) => {
   return config;
 });
 
-export default dogsApi;
+export default petsApi;

@@ -1,18 +1,18 @@
 import { useState } from "react";
 import styled from "styled-components";
-import dogsApi from "../config/axios";
+import petsApi from "../config/axios";
 import Card from "../components/Card";
 import { SectionContainer } from "../containers/SectionContainer";
 import { StackContainer } from "../containers/StackContainer";
 import { H4 } from "../elements/Heading";
 import { Small } from "../elements/Small";
-import { Dog, SearchState } from "../types/dataTypes";
+import { Pet, SearchState } from "../types/dataTypes";
 import TextField from "../components/TextField/index";
 import { Button } from "../elements/Button";
 
-const SearchDogsPage = () => {
+const SearchPetsPage = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [dogs, setDogs] = useState<Dog[]>([]);
+  const [pets, setPets] = useState<Pet[]>([]);
   const [state, setState] = useState<SearchState>("idle");
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -20,11 +20,16 @@ const SearchDogsPage = () => {
     setState("searching");
     console.log(searchValue);
 
-    dogsApi.get<Dog[]>(`/dogs/${searchValue}`).then((res) => {
-      setDogs(res.data);
-      console.log(res.data);
-      setState("results-done");
-    });
+    petsApi
+      .get<Pet[]>(`/pets/${searchValue}`)
+      .then((res) => {
+        setPets(res.data);
+        console.log(res.data);
+        setState("results-done");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -59,29 +64,29 @@ const SearchDogsPage = () => {
         </div>
       ) : state === "searching" ? (
         <div style={{ padding: "2rem 1rem" }}>Espere un momento...</div>
-      ) : dogs.length == 0 ? (
+      ) : pets.length == 0 ? (
         <div style={{ padding: "2rem 1rem" }}>
           No se encontraron resultados 😅
         </div>
       ) : (
-        dogs.map((dog) => (
+        pets.map((pet) => (
           <Card style={{ margin: "20px auto" }} size='lg'>
             <StackContainer>
               <ImgContainer>
-                <ResponsiveImg src={dog.img} alt={dog.name} />
+                <ResponsiveImg src={pet.img} alt={pet.name} />
               </ImgContainer>
-              <DogInfo>
-                <H4 style={{ marginBottom: 0 }}>{dog.name}</H4>
-                <Small style={{ margin: 0 }}>{dog.id}</Small>
+              <PetInfo>
+                <H4 style={{ marginBottom: 0 }}>{pet.name}</H4>
+                <Small style={{ margin: 0 }}>{pet.id}</Small>
                 <br />
                 <br />
                 <hr />
                 <br />
-                <strong>Raza: </strong>
-                {dog.breed} <br /> <br />
+                <strong>Tipo de mascota: </strong>
+                {pet.type} <br /> <br />
                 <strong>Fecha de registro: </strong>
-                {String(dog.registered_at).slice(0, 10)} <br /> <br />
-              </DogInfo>
+                {String(pet.registered_at).slice(0, 10)} <br /> <br />
+              </PetInfo>
             </StackContainer>
           </Card>
         ))
@@ -101,7 +106,7 @@ const ResponsiveImg = styled.img`
   }
 `;
 
-const DogInfo = styled.div`
+const PetInfo = styled.div`
   padding: 1em 2em;
   color: #000;
   @media (max-width: 768px) {
@@ -116,4 +121,4 @@ const ImgContainer = styled.div`
   }
 `;
 
-export default SearchDogsPage;
+export default SearchPetsPage;

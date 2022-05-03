@@ -3,13 +3,13 @@ import PublicRoutes from "./PublicRoutes";
 import LoginPage from "../../pages/LoginPage";
 import RegisterPage from "../../pages/RegisterPage";
 import ProtectedRoutes from "./ProtectedRoute";
-import RegisterDogPage from "../../pages/RegisterDogPage";
-import ViewDogsPage from "../../pages/ViewDogsPage";
+import NewPetPage from "../../pages/NewPetPage";
+import MyPetsPage from "../../pages/MyPetsPage";
 import HomePage from "../../pages/HomePage";
 import LandingPage from "../../pages/LandingPage";
-import SearchDogsPage from "../../pages/SearchDogsPage";
+import SearchPetsPage from "../../pages/SearchPetsPage";
 import NewConsultPage from "../../pages/NewConsultPage";
-import DogDetailsPage from "../../pages/DogDetailsPage";
+import PetDetailsPage from "../../pages/PetDetailsPage";
 import ProfilePage from "../../pages/ProfilePage";
 
 const Routes = () => {
@@ -23,11 +23,15 @@ const Routes = () => {
 
       <Route element={<ProtectedRoutes />}>
         <Route path='/home' element={<HomePage />} />
-        <Route path='/register-dog' element={<RegisterDogPage />} />
-        <Route path='/search-dogs' element={<SearchDogsPage />} />
-        <Route path='/new-consultation' element={<NewConsultPage />} />
-        <Route path='/view-dogs' element={<ViewDogsPage />} />
-        <Route path='/dog-details/:dogId' element={<DogDetailsPage />} />
+        <Route path='/pets'>
+          <Route path='new' element={<NewPetPage />} />
+          <Route path='search' element={<SearchPetsPage />} />
+          <Route path='my-pets' element={<MyPetsPage />} />
+          <Route path=':petId' element={<PetDetailsPage />} />
+        </Route>
+        <Route path='/consultations'>
+          <Route path='new' element={<NewConsultPage />} />
+        </Route>
         <Route path='/profile' element={<ProfilePage />} />
       </Route>
 

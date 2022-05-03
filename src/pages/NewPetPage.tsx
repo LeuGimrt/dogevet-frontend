@@ -1,40 +1,28 @@
 import { useState } from "react";
 import { SectionContainer } from "../containers/SectionContainer";
 import { Button } from "../elements/Button";
-import { AxiosErrorResponse, Dog, NewDogData } from "../types/dataTypes";
+import { AxiosErrorResponse, Pet } from "../types/dataTypes";
 import { H1 } from "../elements/Heading";
 import Card from "../components/Card";
 import TextField from "../components/TextField";
 import Select from "../components/Select";
-import dogsApi from "../config/axios";
+import petsApi from "../config/axios";
 import toast from "react-hot-toast";
 import useStorage from "../hooks/useStorage";
 import { Spinner } from "../elements/Spinner";
 import { useFormik } from "formik";
 import { newDogValidations } from "../utils/validations";
+import { petTypeOptions, sexOptions } from "../utils/constants";
+import { NewPetData } from "../types/requestTypes";
 
-const breedOptions = [
-  { label: "Pitbull", value: "pitbull" },
-  { label: "Bulldog", value: "bulldog" },
-  { label: "Shih Tzu", value: "shihtzu" },
-  { label: "Pequinés", value: "pequines" },
-  { label: "San Bernardo", value: "san-bernardo" },
-  { label: "Chihuaha", value: "chihuaha" },
-];
-
-const genderOptions = [
-  { label: "Macho", value: "1" },
-  { label: "Hembra", value: "0" },
-];
-
-const initialValues: NewDogData = {
+const initialValues: NewPetData = {
   name: "",
-  breed: "pitbull",
-  gender: "1",
+  type: "Gato",
+  sex: "M",
   b_date: "",
 };
 
-const RegisterDogPage = () => {
+const NewPetPage = () => {
   const [img, setImg] = useState<File>();
   const [isSending, setIsSending] = useState(false);
   const { uploadFile } = useStorage("pets");
@@ -50,7 +38,7 @@ const RegisterDogPage = () => {
   } = useFormik({
     initialValues,
     validationSchema: newDogValidations,
-    onSubmit: () => registerDog(),
+    onSubmit: () => registerPet(),
   });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +47,7 @@ const RegisterDogPage = () => {
     setImg(files[0]);
   };
 
-  const registerDog = async () => {
+  const registerPet = async () => {
     console.log(values);
 
     if (!img) {
@@ -79,8 +67,8 @@ const RegisterDogPage = () => {
   };
 
   const sendData = (url: string) => {
-    dogsApi
-      .post<Dog>("/dogs/new", {
+    petsApi
+      .post<Pet>("/pets/new", {
         ...values,
         img: url,
       })
@@ -128,28 +116,25 @@ const RegisterDogPage = () => {
           />
           <TextField.Validations touched={touched.name} message={errors.name} />
           <Select
-            name='breed'
-            label='Raza'
+            name='type'
+            label='Tipo de mascota'
             handleChange={handleChange}
-            value={values.breed}
-            options={breedOptions}
+            value={values.type}
+            options={petTypeOptions}
             onBlur={handleBlur}
             required
           />
-          <Select.Validations touched={touched.breed} message={errors.breed} />
+          <Select.Validations touched={touched.type} message={errors.type} />
           <Select
-            name='gender'
-            label='Género'
+            name='sex'
+            label='Sexo'
             handleChange={handleChange}
-            value={values.gender}
-            options={genderOptions}
+            value={values.sex}
+            options={sexOptions}
             onBlur={handleBlur}
             required
           />
-          <Select.Validations
-            touched={touched.gender}
-            message={errors.gender}
-          />
+          <Select.Validations touched={touched.sex} message={errors.sex} />
 
           <TextField
             handleChange={handleChange}
@@ -196,4 +181,4 @@ const RegisterDogPage = () => {
   );
 };
 
-export default RegisterDogPage;
+export default NewPetPage;

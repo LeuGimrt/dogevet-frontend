@@ -7,38 +7,29 @@ import { useContext, useEffect, useState } from "react";
 import { AvatarImg } from "../components/Navbar/styles";
 import TextField from "../components/TextField/index";
 import useForm from "../hooks/useForm";
-import { Consultation, Dog } from "../types/dataTypes";
-import dogsApi from "../config/axios";
+import { Consultation, Pet } from "../types/dataTypes";
+import petsApi from "../config/axios";
 import Select from "../components/Select/index";
 import { Button } from "../elements/Button";
 import toast from "react-hot-toast";
-import useUploadFile from "../hooks/useStorage";
+import useStorage from "../hooks/useStorage";
 
 const NewConsultPage = () => {
   const [img, setImg] = useState<File>();
-  const { uploadFile } = useUploadFile("consults");
+  const { uploadFile } = useStorage("consults");
 
-  const [dogsOptions, setDogsOptions] = useState<
+  const [petsOptions, setPetsOptions] = useState<
     { label: string; value: string }[]
   >([]);
 
   const { user } = useContext(AuthContext);
-  const {
-    dogId,
-    symptoms,
-    blood_test,
-    medicine,
-    cost,
-    onChange,
-    form,
-    setFormValue,
-  } = useForm({
-    dogId: "",
-    symptoms: "",
-    blood_test: "",
-    medicine: "",
-    cost: "",
-  });
+  const { pet_id, symptoms, medicine, cost, onChange, form, setFormValue } =
+    useForm({
+      pet_id: "",
+      symptoms: "",
+      medicine: "",
+      cost: "",
+    });
 
   useEffect(() => {
     loadDogs();
@@ -46,18 +37,17 @@ const NewConsultPage = () => {
 
   const loadDogs = async () => {
     try {
-      const res = await dogsApi.get<Dog[]>("/dogs/allDogs");
-      const opts = res.data.map((dog) => {
+      const res = await petsApi.get<Pet[]>("/pets/all");
+      const opts = res.data.map((pet) => {
         return {
-          label: `${dog.name} - ${dog.id}`,
-          value: dog.id,
+          label: `${pet.id} - ${pet.name}`,
+          value: String(pet.id),
         };
       });
-      setDogsOptions(opts);
+      setPetsOptions(opts);
       setFormValue({
-        dogId: res.data[0].id.toString(),
+        pet_id: String(res.data[0].id),
         symptoms: "",
-        blood_test: "",
         medicine: "",
         cost: "",
       });
@@ -86,13 +76,12 @@ const NewConsultPage = () => {
   };
 
   const registerConsult = (url: string) => {
-    dogsApi
+    petsApi
       .post<Consultation>("/consults/new", {
-        dogId,
+        pet_id: parseInt(pet_id),
         symptoms,
-        blood_test,
         medicine,
-        cost,
+        cost: parseFloat(cost),
         x_ray_img: url,
       })
       .then((res) => {
@@ -103,9 +92,8 @@ const NewConsultPage = () => {
           },
         });
         setFormValue({
-          dogId: dogsOptions[0].value,
+          pet_id: petsOptions[0].value,
           symptoms: "",
-          blood_test: "",
           medicine: "",
           cost: "",
         });
@@ -149,13 +137,13 @@ const NewConsultPage = () => {
           </H1>
           <form onSubmit={handleSubmit}>
             <Select
-              name='dog-id'
+              name='pet_id'
               label='Canino (Código - Nombre)'
               handleChange={({ currentTarget: { value } }) =>
-                onChange(value, "dogId")
+                onChange(value, "pet_id")
               }
-              value={dogId}
-              options={dogsOptions}
+              value={pet_id}
+              options={petsOptions}
               required
             />
             <TextField
@@ -166,15 +154,6 @@ const NewConsultPage = () => {
               label='Síntomas'
               name='symptoms'
               placeholder='Ingrese los síntomas...'
-            />
-            <TextField
-              handleChange={({ currentTarget: { value } }) =>
-                onChange(value, "blood_test")
-              }
-              value={blood_test}
-              label='Examen de Sangre'
-              name='blood_test'
-              placeholder='Ingrese los resultados del examen de sangre...'
             />
             <TextField
               handleChange={({ currentTarget: { value } }) =>

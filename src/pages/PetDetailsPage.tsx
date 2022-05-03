@@ -7,20 +7,19 @@ import { H1, H4, H2, H6 } from "../elements/Heading";
 import Card from "../components/Card";
 import { StackContainer } from "../containers/StackContainer";
 import { Small } from "../elements/Small";
-import useDogDetails from "../hooks/useDogDetails";
-import { Button, ExternalLinkButton, LinkButton } from "../elements/Button";
+import usePetDetails from "../hooks/usePetDetails";
 
-const DogDetailsPage = () => {
-  const { dogId } = useParams();
+const PetDetailsPage = () => {
+  const { petId } = useParams();
 
-  const { dogDetails } = useDogDetails(dogId!);
+  const { petDetails } = usePetDetails(petId!);
 
   const calcTotalDebt = (costos: number[]) => {
     const reducer = (acc: number, curr: number) => acc + curr;
     return costos.reduce(reducer);
   };
 
-  if (!dogDetails) return <div>Cargando...</div>;
+  if (!petDetails) return <div>Cargando...</div>;
 
   return (
     <SectionContainer
@@ -33,31 +32,31 @@ const DogDetailsPage = () => {
       }}
     >
       <H1 style={{ fontSize: "2rem" }} center>
-        Detalles de {dogDetails.name}
+        Detalles de {petDetails.name}
       </H1>
       <Card style={{ margin: "20px auto" }} size='lg'>
         <StackContainer>
           <ExtraInfo>
-            <ResponsiveImg src={dogDetails.img} alt={dogDetails.name} />
+            <ResponsiveImg src={petDetails.img} alt={petDetails.name} />
           </ExtraInfo>
           <DogInfo>
-            <H4 style={{ marginBottom: 0 }}>{dogDetails.name}</H4>
-            <Small style={{ margin: 0 }}>{dogDetails.id}</Small>
+            <H4 style={{ marginBottom: 0 }}>{petDetails.name}</H4>
+            <Small style={{ margin: 0 }}>{petDetails.id}</Small>
             <br />
             <br />
             <hr />
             <br />
-            <strong>Raza: </strong>
-            {dogDetails.breed} <br /> <br />
+            <strong>Tipo de mascota: </strong>
+            {petDetails.type} <br /> <br />
             <strong>Fecha de registro: </strong>
-            {String(dogDetails.registered_at).slice(0, 10)} <br /> <br />
+            {String(petDetails.registered_at).slice(0, 10)} <br /> <br />
             <strong>Género: </strong>
-            {dogDetails.gender == 0 ? "Hembra" : "Macho"} <br /> <br />
-            {dogDetails.consultations.length > 0 && (
+            {petDetails.sex == "FEMALE" ? "Hembra" : "Macho"} <br /> <br />
+            {petDetails.consultations.length > 0 && (
               <strong style={{ fontSize: "1.3rem" }}>
                 Deuda total: S/.
                 {calcTotalDebt(
-                  dogDetails.consultations.map((consultation) =>
+                  petDetails.consultations.map((consultation) =>
                     parseFloat(consultation.cost)
                   )
                 )}
@@ -68,7 +67,7 @@ const DogDetailsPage = () => {
       </Card>
       <H2 style={{ fontSize: "1.6rem" }}>Consultas realizadas</H2>
       <Card style={{ padding: "1em", margin: "15px 0" }} size='lg'>
-        {dogDetails.consultations.map((consultation) => (
+        {petDetails.consultations.map((consultation) => (
           <>
             <StackContainer style={{ padding: "1em 15px" }}>
               <ExtraInfo>
@@ -91,9 +90,6 @@ const DogDetailsPage = () => {
                 <p>{consultation.medicine}</p> <br />
                 <strong>Fecha de consulta: </strong>
                 <p>{String(consultation.registered_at).slice(0, 10)}</p> <br />
-                <strong>Examen de sangre: </strong>
-                <br />
-                <p>{consultation.blood_test}</p> <br />
                 <strong>Rayos X</strong> <br /> <br />
                 <div>
                   <img
@@ -157,4 +153,4 @@ const ConsultInfo = styled.div`
   }
 `;
 
-export default DogDetailsPage;
+export default PetDetailsPage;

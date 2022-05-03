@@ -5,15 +5,18 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
 
+import DiagnosisImg from "../assets/diagnosis.jpg";
+
+import { AxiosErrorResponse } from "../types/dataTypes";
+
 import { AuthContext } from "../context/AuthContext";
 import { SectionContainer } from "../containers/SectionContainer";
 import { StackContainer } from "../containers/StackContainer";
-import DiagnosisImg from "../assets/diagnosis.jpg";
 import Card from "../components/Card";
 import { H1 } from "../elements/Heading";
 import TextField from "../components/TextField";
 import { Button } from "../elements/Button";
-import { AxiosErrorResponse } from "../types/dataTypes";
+
 import { loginValidations } from "../utils/validations";
 
 const LoginPage = () => {

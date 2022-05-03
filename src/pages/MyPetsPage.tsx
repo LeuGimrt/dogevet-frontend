@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 import { SectionContainer } from "../containers/SectionContainer";
-import { Dog } from "../types/dataTypes";
-import dogsApi from "../config/axios";
+import { Pet } from "../types/dataTypes";
+import petsApi from "../config/axios";
 import Card from "../components/Card";
 import { StackContainer } from "../containers/StackContainer";
 import { ContainerLinkButton } from "../elements/Button";
@@ -13,18 +13,18 @@ import { H4, H3 } from "../elements/Heading";
 import { Small } from "../elements/Small";
 import LoadingPage from "./LoadingPage";
 
-const ViewDogsPage = () => {
-  const [myDogs, setMyDogs] = useState<Dog[]>([]);
+const MyPetsPage = () => {
+  const [myPets, setMyPets] = useState<Pet[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadMyDogs();
+    loadMyPets();
   }, []);
 
-  const loadMyDogs = async () => {
+  const loadMyPets = async () => {
     try {
-      const res = await dogsApi.get<Dog[]>("/dogs/");
-      setMyDogs(res.data);
+      const res = await petsApi.get<Pet[]>("/pets/");
+      setMyPets(res.data);
       setIsLoading(false);
       console.log(res.data);
     } catch (error) {
@@ -35,7 +35,7 @@ const ViewDogsPage = () => {
 
   if (isLoading) return <LoadingPage title='Mis mascotas 🐶' />;
 
-  if (myDogs.length == 0)
+  if (myPets.length == 0)
     return (
       <SectionContainer
         flex
@@ -48,7 +48,7 @@ const ViewDogsPage = () => {
         <div style={{ padding: "2rem" }}>
           Aún no tiene mascotas registradas 😮 <br />
         </div>
-        <Link to='/register-dog'>Ir a registro</Link>
+        <Link to='/pets/new'>Ir a registro</Link>
       </SectionContainer>
     );
 
@@ -60,29 +60,26 @@ const ViewDogsPage = () => {
       alignItems='center'
       py={3}
     >
-      <H3>Mis caninos 🐶</H3>
-      {myDogs.map((dog) => (
-        <ContainerLinkButton
-          style={{ width: "100%" }}
-          to={`/dog-details/${dog.id}`}
-        >
+      <H3>Mis mascotas 🐶</H3>
+      {myPets.map((pet) => (
+        <ContainerLinkButton style={{ width: "100%" }} to={`/pets/${pet.id}`}>
           <Card style={{ margin: "20px auto" }} size='lg'>
             <StackContainer>
               <ImgContainer>
-                <ResponsiveImg src={dog.img} alt={dog.name} />
+                <ResponsiveImg src={pet.img} alt={pet.name} />
               </ImgContainer>
-              <DogInfo>
-                <H4 style={{ marginBottom: 0 }}>{dog.name}</H4>
-                <Small style={{ margin: 0 }}>{dog.id}</Small>
+              <PetInfo>
+                <H4 style={{ marginBottom: 0 }}>{pet.name}</H4>
+                <Small style={{ margin: 0 }}>{pet.id}</Small>
                 <br />
                 <br />
                 <hr />
                 <br />
-                <strong>Raza: </strong>
-                {dog.breed} <br /> <br />
+                <strong>Tipo de mascota: </strong>
+                {pet.type} <br /> <br />
                 <strong>Fecha de registro: </strong>
-                {String(dog.registered_at).slice(0, 10)} <br /> <br />
-              </DogInfo>
+                {String(pet.registered_at).slice(0, 10)} <br /> <br />
+              </PetInfo>
             </StackContainer>
           </Card>
         </ContainerLinkButton>
@@ -102,7 +99,7 @@ const ResponsiveImg = styled.img`
   }
 `;
 
-const DogInfo = styled.div`
+const PetInfo = styled.div`
   padding: 1em 2em;
   color: #000;
   @media (max-width: 768px) {
@@ -117,4 +114,4 @@ const ImgContainer = styled.div`
   }
 `;
 
-export default ViewDogsPage;
+export default MyPetsPage;

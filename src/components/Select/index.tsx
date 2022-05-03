@@ -6,12 +6,12 @@ type Props = {
   name: string;
   handleChange: React.ChangeEventHandler<HTMLSelectElement>;
   onBlur?: React.FocusEventHandler<HTMLSelectElement> | undefined;
-  value: string;
+  value: string | number;
   required?: boolean;
   disabled?: boolean;
   options: {
     label: string;
-    value: string;
+    value: string | number;
   }[];
 };
 
