@@ -18,6 +18,7 @@ import { newConsultationValidations } from "../utils/validations";
 import { newConsultationInitialValues } from "../utils/constants";
 import useAllPets from "../hooks/useAllPets";
 import { Spinner } from "../elements/Spinner";
+import UserCard from "../components/UserCard";
 
 const NewConsultPage = () => {
   const [img, setImg] = useState<File>();
@@ -109,23 +110,7 @@ const NewConsultPage = () => {
       py={4}
     >
       <StackContainer gap={1}>
-        <div style={{ padding: "1.5em" }}>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <AvatarImg
-              src='https://cdn-icons-png.flaticon.com/512/147/147144.png'
-              alt='Usuario'
-              size={100}
-            />
-          </div>
-          <br />
-          <strong>Nombres: </strong> {user?.firstname! + " " + user?.lastname!}{" "}
-          <br />
-          <br />
-          <strong>Correo: </strong> {user?.email} <br />
-          <br />
-          <strong>Teléfono: </strong> {user?.phone} <br />
-          <br />
-        </div>
+        <UserCard user={user!} />
         <Card size='md' style={{ padding: "1.5em" }}>
           <H1 center style={{ fontSize: "2rem" }}>
             Nuevo diagnóstico
