@@ -5,6 +5,13 @@ export type NewPetData = {
   sex: "M" | "F";
 };
 
+export type NewConsultationData = {
+  pet_id: string;
+  symptoms: string;
+  medicine: string;
+  cost: string;
+};
+
 export type LoginData = {
   email: string;
   password: string;

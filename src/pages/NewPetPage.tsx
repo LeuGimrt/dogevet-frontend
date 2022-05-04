@@ -12,15 +12,11 @@ import useStorage from "../hooks/useStorage";
 import { Spinner } from "../elements/Spinner";
 import { useFormik } from "formik";
 import { newDogValidations } from "../utils/validations";
-import { petTypeOptions, sexOptions } from "../utils/constants";
-import { NewPetData } from "../types/requestTypes";
-
-const initialValues: NewPetData = {
-  name: "",
-  type: "Gato",
-  sex: "M",
-  b_date: "",
-};
+import {
+  petTypeOptions,
+  sexOptions,
+  newPetInitialValues,
+} from "../utils/constants";
 
 const NewPetPage = () => {
   const [img, setImg] = useState<File>();
@@ -36,7 +32,7 @@ const NewPetPage = () => {
     handleBlur,
     setValues,
   } = useFormik({
-    initialValues,
+    initialValues: newPetInitialValues,
     validationSchema: newDogValidations,
     onSubmit: () => registerPet(),
   });
@@ -80,7 +76,7 @@ const NewPetPage = () => {
             color: "white",
           },
         });
-        setValues(initialValues);
+        setValues(newPetInitialValues);
         setImg(undefined);
       })
       .catch((error) => {
@@ -91,13 +87,10 @@ const NewPetPage = () => {
 
   return (
     <SectionContainer
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        padding: "50px 15px",
-      }}
+      flex
+      alignItems='center'
+      justifyContent='center'
+      flexDirection='column'
     >
       <Card size='md' style={{ padding: "2em" }}>
         <H1 style={{ fontSize: "2.5rem" }} center>

@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-import dogsApi from "../config/axios";
-import { PetDetails as PetDetailsType } from "../types/dataTypes";
 import toast from "react-hot-toast";
 
-const usePetDetails = (dogId: string) => {
+import petsApi from "../config/axios";
+import { PetDetails as PetDetailsType } from "../types/dataTypes";
+
+const usePetDetails = (petId: string) => {
   const [petDetails, setPetDetails] = useState<PetDetailsType>();
 
   useEffect(() => {
-    loadDogDetails();
+    loadPetDetails();
   }, []);
 
-  const loadDogDetails = async () => {
+  const loadPetDetails = async () => {
     try {
-      const res = await dogsApi.get<PetDetailsType>(`/dogs/details/${dogId}`);
+      const res = await petsApi.get<PetDetailsType>(`/pets/details/${petId}`);
       setPetDetails(res.data);
     } catch (error) {
       toast.error("Ocurrió un error");

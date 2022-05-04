@@ -46,6 +46,18 @@ const sexValidation = Yup.string()
 
 const bDateValidation = Yup.date().required("Requerido");
 
+// New consultation validations
+
+const petIdValidation = Yup.number()
+  .min(1, "Debe elegir una mascota")
+  .required("Requerido");
+
+const textValidation = Yup.string()
+  .max(200, "El máximo de caracteres es de 200")
+  .required("Requerido");
+
+const costValidation = Yup.number().required("Requerido");
+
 // Validation objects
 
 export const loginValidations = Yup.object({
@@ -66,4 +78,11 @@ export const newDogValidations = Yup.object({
   type: nameValidation,
   sex: sexValidation,
   b_date: bDateValidation,
+});
+
+export const newConsultationValidations = Yup.object({
+  pet_id: petIdValidation,
+  symptoms: textValidation,
+  medicine: textValidation,
+  cost: costValidation,
 });
