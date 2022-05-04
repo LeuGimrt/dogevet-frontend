@@ -34,12 +34,11 @@ const SearchPetsPage = () => {
 
   return (
     <SectionContainer
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        padding: "50px 15px",
-      }}
+      flex
+      alignItems='center'
+      justifyContent='center'
+      flexDirection='column'
+      py={5}
     >
       <H4>Búsqueda de mascotas 🐶</H4> <br />
       <Card style={{ padding: "1.5em" }}>

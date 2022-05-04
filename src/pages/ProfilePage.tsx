@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import dogsApi from "../config/axios";
+import { useFormik } from "formik";
+
+import petsApi from "../config/axios";
 import Card from "../components/Card";
 import { AvatarImg } from "../components/Navbar/styles";
 import TextField from "../components/TextField";
@@ -9,40 +11,48 @@ import { StackContainer } from "../containers/StackContainer";
 import { AuthContext } from "../context/AuthContext";
 import { Button } from "../elements/Button";
 import { H1 } from "../elements/Heading";
-import useForm from "../hooks/useForm";
 import { User } from "../types/dataTypes";
+import { editUserValidations } from "../utils/validations";
+import { Spinner } from "../elements/Spinner";
 
 const ProfilePage = () => {
   const { user, updateUser } = useContext(AuthContext);
   const [isActive, setIsActive] = useState(false);
-  const { firstname, lastname, phone, form, setFormValue, onChange } = useForm({
-    firstname: user?.firstname,
-    lastname: user?.lastname,
-    phone: user?.phone,
-  });
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log("alo");
+  const { values, handleChange, handleSubmit, errors, touched, handleBlur } =
+    useFormik({
+      initialValues: {
+        firstname: user?.firstname,
+        lastname: user?.lastname,
+        phone: user?.phone,
+      },
+      validationSchema: editUserValidations,
+      onSubmit: () => editUser(),
+    });
 
-    dogsApi
-      .put<User>("/user/edit", form)
+  const editUser = () => {
+    setIsSending(true);
+    petsApi
+      .put<User>("/user/edit", values)
       .then((res) => {
         toast.success("Información actualizada");
         updateUser(res.data);
       })
-      .catch((err) => toast.error("No se logró actualizar la información"));
+      .catch((err) => toast.error("No se logró actualizar la información"))
+      .finally(() => {
+        setIsSending(false);
+        setIsActive(false);
+      });
   };
 
   return (
     <SectionContainer
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        padding: "50px 15px",
-      }}
+      flex
+      alignItems='center'
+      justifyContent='center'
+      flexDirection='column'
+      py={5}
     >
       <StackContainer gap={1}>
         <div style={{ padding: "1.5em" }}>
@@ -63,8 +73,9 @@ const ProfilePage = () => {
           <br />
           <Button
             size='sm'
-            bgcolor='secondary'
+            bgcolor='dark'
             onClick={() => setIsActive((value) => !value)}
+            disabled={isActive}
           >
             Editar
           </Button>
@@ -77,35 +88,46 @@ const ProfilePage = () => {
             <TextField
               name='firstname'
               label='Nombres'
-              handleChange={({ currentTarget: { value } }) =>
-                onChange(value, "firstname")
-              }
-              value={firstname}
+              handleChange={handleChange}
+              value={values.firstname}
               required
               disabled={!isActive}
+              onBlur={handleBlur}
+            />
+            <TextField.Validations
+              touched={touched.firstname}
+              message={errors.firstname}
             />
             <TextField
-              handleChange={({ currentTarget: { value } }) =>
-                onChange(value, "lastname")
-              }
-              value={lastname}
+              handleChange={handleChange}
+              value={values.lastname}
               label='Apellidos'
               name='lastname'
               required
               disabled={!isActive}
+              onBlur={handleBlur}
             />
+            <TextField.Validations
+              touched={touched.lastname}
+              message={errors.lastname}
+            />
+
             <TextField
-              handleChange={({ currentTarget: { value } }) =>
-                onChange(value, "phone")
-              }
-              value={phone}
+              handleChange={handleChange}
+              value={values.phone}
               label='Teléfono'
               name='phone'
               pattern='^[0-9]{9}$'
               type='tel'
               required
               disabled={!isActive}
+              onBlur={handleBlur}
             />
+            <TextField.Validations
+              touched={touched.phone}
+              message={errors.phone}
+            />
+
             <TextField
               handleChange={() => {}}
               value={user?.email}
@@ -123,14 +145,26 @@ const ProfilePage = () => {
             />
 
             <Button
-              bgcolor='dark'
-              size='sm'
+              bgcolor='primary'
+              size='md'
               className='btn btn-success'
               type='submit'
               fullWidth
               style={{ margin: "20px 0" }}
+              disabled={isSending}
             >
-              Actualizar información
+              {isSending ? (
+                <>
+                  <Spinner
+                    color='primary'
+                    size='xs'
+                    style={{ marginRight: 6 }}
+                  />{" "}
+                  Actualizando...
+                </>
+              ) : (
+                "ACTUALIZAR INFORMACIÓN"
+              )}
             </Button>
           </form>
         </Card>

@@ -10,7 +10,7 @@ const LandingPage = () => {
   return (
     <>
       <HeroSection />
-      <SectionContainer style={{ padding: "30px 10px" }}>
+      <SectionContainer px={4} py={1}>
         <H3 center>Servicios</H3>
         <StackContainer gap={2} justify='center'>
           <Card size='sm'>

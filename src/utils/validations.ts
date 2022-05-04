@@ -86,3 +86,9 @@ export const newConsultationValidations = Yup.object({
   medicine: textValidation,
   cost: costValidation,
 });
+
+export const editUserValidations = Yup.object({
+  firstname: nameValidation,
+  lastname: nameValidation,
+  phone: phoneValidation,
+});

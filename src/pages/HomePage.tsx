@@ -21,14 +21,12 @@ const HomePage = () => {
 
   return (
     <SectionContainer
-      style={{
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "50px 15px",
-        flexDirection: "column",
-      }}
+      fullheight
+      flex
+      alignItems='center'
+      justifyContent='center'
+      flexDirection='column'
+      py={4}
     >
       <H1 style={{ fontSize: "2.5rem", marginBottom: 20 }} center>
         Elija una opción para empezar

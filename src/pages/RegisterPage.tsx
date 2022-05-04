@@ -56,13 +56,12 @@ const RegisterPage = () => {
 
   return (
     <SectionContainer
-      style={{
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "50px 15px",
-      }}
+      fullheight
+      flex
+      alignItems='center'
+      justifyContent='center'
+      flexDirection='column'
+      py={5}
     >
       <Card size='lg'>
         <StackContainer>

@@ -45,12 +45,10 @@ const LoginPage = () => {
 
   return (
     <SectionContainer
-      style={{
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      fullheight
+      flex
+      alignItems='center'
+      justifyContent='center'
     >
       <Card size='lg'>
         <StackContainer>

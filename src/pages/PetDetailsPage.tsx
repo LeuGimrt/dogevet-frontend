@@ -23,13 +23,11 @@ const PetDetailsPage = () => {
 
   return (
     <SectionContainer
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        padding: "50px 15px",
-      }}
+      flex
+      alignItems='center'
+      justifyContent='center'
+      flexDirection='column'
+      py={5}
     >
       <H1 style={{ fontSize: "2rem" }} center>
         Detalles de {petDetails.name}

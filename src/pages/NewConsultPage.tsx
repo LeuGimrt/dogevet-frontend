@@ -106,6 +106,7 @@ const NewConsultPage = () => {
       alignItems='center'
       justifyContent='center'
       flexDirection='column'
+      py={4}
     >
       <StackContainer gap={1}>
         <div style={{ padding: "1.5em" }}>
