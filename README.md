@@ -4,7 +4,7 @@
 
 Dogevet is a web application for managing pet consultations. It supports authentication, authorization, consultations management, file uploads and more.
 
-The frontend was made with React + Vite, Typescript, Styled Components and uses Firebase for storing images in the cloud.
+The frontend was made with React + Vite, TypeScript, Styled Components and uses Firebase for storing images in the cloud.
 It consumes a REST API that you can find [here](https://github.com/LeuGimrt/dogevet-backend).
 
 ## Prerequisites
